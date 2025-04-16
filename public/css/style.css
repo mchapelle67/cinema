@@ -1,0 +1,82 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+img{
+    vertical-align: top;
+}
+ 
+body {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    font-family: 'Raleway'
+}
+
+:root {
+    --netflix_red: rgb(139, 0, 0, 0.8);
+    /* --low_black:; */
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+/* ***************************************NAVIGATEUR***************************************** */
+#navigateur {
+    background: rgb(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px;
+    padding: 10px;
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+#navigateur a {
+    border-right: 1px solid white;
+    padding-right: 150px;
+}
+
+#navigateur nav {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+}
+
+/* ***************************************FOOTER*************************************************** */
+footer {
+    background: var(--netflix_red);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 20px;
+    padding: 10px;
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+.liens i {
+    padding: 0 20px 0 20px; 
+}
+
+.contact {
+    border-right: 1px solid white;
+    padding-right: 20px
+}
+
+/* **********************************************LIEN FILM********************************************* */
+.listeFilms p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.5em;
+    font-style: italic;
+    font-weight: 600;
+}
