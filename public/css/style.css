@@ -15,7 +15,7 @@ body {
 
 :root {
     --netflix_red: rgb(139, 0, 0, 0.8);
-    /* --low_black:; */
+    --low_black: rgb(0, 0, 0, 0.5);
 }
 
 a {
@@ -29,7 +29,7 @@ a:hover {
 
 /* ***************************************NAVIGATEUR***************************************** */
 #navigateur {
-    background: rgb(0, 0, 0, 0.5);
+    background: var(--low_black);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -73,10 +73,153 @@ footer {
     padding-right: 20px
 }
 
-/* **********************************************LIEN FILM********************************************* */
+/* **********************************************LIENS FILMS********************************************* */
 .listeFilms p {
     font-family: 'Inter', sans-serif;
     font-size: 0.5em;
     font-style: italic;
+    font-weight: 600;
+}
+
+/* **********************************************DETAIL FILM******************************************** */
+.blocks {
+    display: flex;
+    justify-content: space-between;
+}
+
+.infos, .synopsis {
+    background-color: var(--low_black);
+    border-radius: 10px;
+    margin: 20px 40px;
+}
+
+.synopsis {
+    width: 520px;
+    height: auto;
+    padding: 20px 50px 0px 40px;
+    overflow: hidden;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.synopsis h2 {
+    font-family: 'Jura', sans-serif;
+    font-weight: 600;
+    font-size: 50px;
+    text-transform: uppercase;
+}
+
+.synopsis p {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.infos {
+    width: 300px;
+    padding: 20px 50px;
+    margin-top: 50px;
+}
+
+.infos h3 {
+    font-family: 'Jura', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.infos p {
+    font-weight: 300;
+    line-height: 130%;
+    font-size: 18px;
+}
+
+.info {
+    padding: 8px 0 8px 0;
+}
+
+.buttons {
+    text-align: center;
+}
+
+.button {
+    align-items: center; 
+    padding: 10px 30px; 
+    margin: 20px 0;
+    background-color: var(--netflix_red);
+    border: none;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.button a {
+    font-family: 'Jura', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+
+/* *********************************************Listes réal + acteurs *************************************** */
+
+.list p {
+    padding: 5px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.list h2 {
+    text-align: center;
+    background-color: var(--netflix_red);
+    padding: 20px;
+    width: fit-content;
+    border-radius: 10px;
+    margin: 20px auto;
+}
+
+/* ***************************************************Détail Acteur + réal ***************************************/
+
+.personne {
+    text-align: center;
+}
+
+.photo h2 {
+    background-color: var(--netflix_red);
+    border-radius: 10px;
+    padding: 15px;
+    width: 500px;
+    margin: auto;
+    word-wrap: break-word;
+}
+
+.personne img {
+    background-color: var(--netflix_red);
+    border-radius: 10px;
+    padding: 15px;
+    width: 350px;
+    height: 500px;
+    margin: 20px;
+}
+
+.infosPersonne {
+    background-color: rgb(17, 17, 17);
+    border-radius: 10px;
+    padding: 15px;
+    width: 350px;
+    margin: auto;
+}
+
+.infosPersonne {
+    color: rgb(224, 219, 219);
+}
+
+.infosPersonne p {
+    padding: 5px;
+    font-weight: 600;
+    color: white;
+}
+
+.infosPersonne a {
+    color: white;
     font-weight: 600;
 }

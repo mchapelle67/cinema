@@ -1,3 +1,11 @@
+<?php
+$backgroundStyle = "";
+
+if (isset($page) && $page === "detailFilm" && !empty($backgroundImage)) {
+    $backgroundStyle = "background: url('public/img/{$backgroundImage}') no-repeat center center / cover;";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,23 +16,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="public/css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+
+
     <title><?= $titre ?></title>
 </head>
-<body>
+
+<body style="<?= $backgroundStyle ?>">
     <header>
         <div id="navigateur">
         <img src="public/img/logo.png" alt="Logo">
             <nav>
-                <a href="http://localhost/manon_CHAPELLE/cin%C3%A9ma/index.php?action=listFilms">FILMS</a>
-                <a href="">AJOUTER</a>
-                <a href="">ACTEURS</a>
-                <a href="">REALISATEURS</a>
+                <a href="http://localhost/manon_CHAPELLE/cinema/index.php?action=listFilms">FILMS</a>
+                <a href="http://localhost/manon_CHAPELLE/cinema/index.php?action=ajouterContenu">AJOUTER</a>
+                <a href="http://localhost/manon_CHAPELLE/cinema/index.php?action=listActeurs">ACTEURS</a>
+                <a href="http://localhost/manon_CHAPELLE/cinema/index.php?action=listRealisateurs">REALISATEURS</a>
             </nav>
         </div>   
     </header> 
     <main>
         <div id="contenu">
-            <h1><?= $titre_secondaire ?><h/1>
+            <h1><?= $titre_secondaire ?></h1>
             <?= $contenu ?>
         </div>
     </main>    
