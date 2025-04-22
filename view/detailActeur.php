@@ -1,4 +1,6 @@
 <?php ob_start(); // on commence chaque vue comme ça
+
+// afficher la date de naissance en fr 
 $formatter = new IntlDateFormatter(
     'fr_FR',              // langue + pays
     IntlDateFormatter::LONG, // format long : 21 avril 2025
@@ -6,7 +8,8 @@ $formatter = new IntlDateFormatter(
 );
 
 $dateDeNaissance = $formatter->format(new DateTime($acteur["dateDeNaissance"]));
- 
+
+//  afficher le sexe 
 if (isset($acteur["sexe"]) && $acteur["sexe"] == "M") {
     $acteur["sexe"] = "Masculin";
     } else {

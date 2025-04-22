@@ -1,4 +1,18 @@
 <?php ob_start(); 
+
+$stars = [
+    1 => $unstars,
+    2 => $deuxstars,
+    3 => $troistars,
+    4 => $quatrestars,
+    5 => $cinqstars
+];
+
+if (isset($film["note"]) && isset($stars[$film["note"]])) {
+    echo $stars[$film["note"]];
+} else {
+    echo $zerostar;
+}
 ?>
 
 <section class="blocks">
@@ -7,8 +21,7 @@
         <h2><?= $film["titre"] ?></h2>
         <p><?= $film["synopsis"] ?></p>
             <div class="buttons">
-                <button class="button" type="button"><a href="">Modifier ce film</a></button>
-                <button class="button" type="button"><a href="">Supprimer ce film</a></button>
+                <button class="button modifier" type="button"><a href="">Modifier ce film</a></button>
             </div>
     </div>
 </div>
@@ -29,7 +42,7 @@
     <div class="info">
         <h3>GENRE</h3>
             <?php foreach($genres as $genre) { ?>
-                <p><?= $genre["nom_genre"] ?></p>
+                <p><a href="index.php?action=detailGenre&id=<?= $genre["id_genre"]?>"><?= $genre["nom_genre"] ?></a></p>
             <?php }; ?>
     </div>
 
@@ -47,7 +60,7 @@
         <h3>DATE DE SORTIE</h3>
             <p><?=$film["annee_sortie"]?></p>
     </div>
-    <button class="button" type="button"><a href="index.php?action=ajouterContenu">Ajouter un film</a></button>
+    <button class="button" type="button"><a href="">Supprimer ce film</a></button>
 </div>
 </section>
 

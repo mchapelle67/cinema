@@ -89,7 +89,7 @@ class CinemaController {
         $requeteReal->execute(['id'=> $id]);
         
         $requeteGenre = $pdo->prepare("
-        SELECT nom_genre
+        SELECT nom_genre, genre.id_genre AS id_genre
         FROM film
         INNER JOIN film_genre ON film.id_film = film_genre.id_film
         INNER JOIN genre ON film_genre.id_genre = genre.id_genre
@@ -149,8 +149,46 @@ class CinemaController {
         require "view/detailRealisateur.php";
     }
 
-    // Ajouter contenu
-    public function ajouterContenu() {
-
+     // Lister les genres
+        public function listGenres() {
+        $pdo = Connect::seConnecter();
+        $requete = $pdo->query("
+        SELECT nom_genre, COUNT(film_genre.id_genre) AS nb_films, genre.id_genre AS id_genre
+        FROM film_genre 
+        INNER JOIN genre ON film_genre.id_genre = genre.id_genre
+        GROUP BY film_genre.id_genre
+        ");
+        require "view/listGenre.php"; 
     }
+
+    // Afficher les films d'un genre 
+    public function detailGenre($id) {
+        $pdo = Connect::seConnecter();
+        $requete = $pdo->prepare("
+        SELECT nom_genre
+        FROM genre 
+        WHERE genre.id_genre = :id
+        ");
+        $requete->execute(['id'=> $id]);
+
+        $requeteFilms = $pdo->prepare("
+        SELECT titre, film.id_film AS id_film
+        FROM film
+        INNER JOIN film_genre ON film.id_film = film_genre.id_film
+        INNER JOIN genre ON film_genre.id_genre = genre.id_genre
+        WHERE genre.id_genre = :id
+        ");
+        $requeteFilms->execute(['id'=> $id]);
+
+        $requeteDelete = $pdo->prepare("
+        DELETE FROM genre 
+        WHERE genre.id_genre = :id
+        ");
+        $requeteDelete->execute(['id'=> $id]);
+
+        $genre = $requete->fetch();
+        $films = $requeteFilms->fetchAll();
+        require "view/detailGenre.php"; 
+    }
+
 }
