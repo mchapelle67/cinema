@@ -141,15 +141,14 @@ footer {
     border: none;
     border-radius: 10px;
     width: fit-content;
-}
-
-.button a {
     font-family: 'Jura', sans-serif;
     font-size: 15px;
     font-weight: 700;
     white-space: nowrap;
     text-transform: uppercase;
+    color: white;
 }
+
 
 /* *********************************************Listes***************** *************************************** */
 
@@ -231,3 +230,16 @@ footer {
     font-size: 1em;
 }
 
+/************************************************************ AJOUT CONTENU ********************************************************* */
+.add {
+    display: flex;
+}
+
+.add_film, .add_perso, .add_genre,.add_casting {
+    background-color: var(--netflix_red);
+    margin: 50px;
+        label {
+            display: flex;
+            flex-direction: column;
+        }
+}

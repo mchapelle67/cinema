@@ -5,9 +5,12 @@
     <h2>Liste des genres</h2>
             <?php 
                 foreach($requete->fetchAll() as $genre) { ?>
-                    <p><a href="index.php?action=detailGenre&id=<?= $genre["id_genre"]?>"><?= $genre["nb_films"]." - ".$genre["nom_genre"] ?></a></p>
+                    <p><a href="index.php?action=detailGenre&id=<?= $genre["id_genre"]?>"><?= $genre["nom_genre"]." - ".$genre["nb_films"] ?></a></p>
                 </tr>
         <?php } ?>
+
+        <a href="index.php?action=ajouterContenu">Ajouter un genre</a>
+
 </section>
 
 <?php

@@ -27,5 +27,10 @@ if(isset($_GET["action"])){
         case "detailRealisateur": $ctrlCinema->detailRealisateur($id); break;
         case "listGenre": $ctrlCinema->listGenres(); break;
         case "detailGenre": $ctrlCinema->detailGenre($id); break;
+        case "ajouterContenu": $ctrlCinema->ajouterContenu(); break;
+        case "supprFilm": $ctrlCinema->supprimerFilm($id); break;
+        case "ajouterGenre": $ctrlCinema->ajouterGenre(); break;
+        case "ajouterFilm": $ctrlCinema->ajouterFilm(); break;
+        case "ajouterCasting": $ctrlCinema->ajouterCasting(); break;
     }
 }

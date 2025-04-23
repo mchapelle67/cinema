@@ -30,10 +30,10 @@ if (isset($page) && $page === "detailFilm" && !empty($backgroundImage)) {
         <div id="navigateur">
         <img src="public/img/logo.png" alt="Logo">
             <nav>
-                <a href="http://localhost/manon_CHAPELLE/cinema/index.php?action=listFilms">FILMS</a>
-                <a href="http://localhost/manon_CHAPELLE/cinema/index.php?action=ajouterContenu">AJOUTER</a>
-                <a href="http://localhost/manon_CHAPELLE/cinema/index.php?action=listActeurs">ACTEURS</a>
-                <a href="http://localhost/manon_CHAPELLE/cinema/index.php?action=listRealisateurs">REALISATEURS</a>
+                <a href="index.php?action=listFilms">FILMS</a>
+                <a href="index.php?action=ajouterContenu">AJOUTER</a>
+                <a href="index.php?action=listActeurs">ACTEURS</a>
+                <a href="index.php?action=listRealisateurs">REALISATEURS</a>
             </nav>
         </div>   
     </header> 

@@ -1,18 +1,4 @@
 <?php ob_start(); 
-
-$stars = [
-    1 => $unstars,
-    2 => $deuxstars,
-    3 => $troistars,
-    4 => $quatrestars,
-    5 => $cinqstars
-];
-
-if (isset($film["note"]) && isset($stars[$film["note"]])) {
-    echo $stars[$film["note"]];
-} else {
-    echo $zerostar;
-}
 ?>
 
 <section class="blocks">
@@ -60,7 +46,9 @@ if (isset($film["note"]) && isset($stars[$film["note"]])) {
         <h3>DATE DE SORTIE</h3>
             <p><?=$film["annee_sortie"]?></p>
     </div>
-    <button class="button" type="button"><a href="">Supprimer ce film</a></button>
+
+    <a href="index.php?action=supprFilm&id=<?= $film['id_film']?> ">Supprimer ce film</a>
+  
 </div>
 </section>
 

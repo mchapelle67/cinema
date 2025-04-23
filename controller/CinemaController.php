@@ -5,7 +5,7 @@ use Model\Connect; //permet d'accéder à la class Connect située dans le names
 
 class CinemaController {
     
-    // Lister les films
+// Lister les films
     public function listFilms() {
         $pdo = Connect::seConnecter();
         $requete = $pdo->query("
@@ -16,7 +16,8 @@ class CinemaController {
         require "view/listFilms.php"; //on relie la vue qui nous intéresse
     }
     
-    // Lister les acteurs
+
+// Lister les acteurs
     public function listActeurs() {
         $pdo = Connect::seConnecter();
         $requete = $pdo->query("
@@ -27,7 +28,8 @@ class CinemaController {
         require "view/listActeurs.php"; 
     }
 
-    // Lister les réalisateurs
+
+// Lister les réalisateurs
     public function listRealisateurs() {
         $pdo = Connect::seConnecter();
         $requete = $pdo->query("
@@ -38,35 +40,36 @@ class CinemaController {
         require "view/listRealisateurs.php"; 
     }
 
-    // Afficher les details des films
+
+// Lister les genres
+    public function listGenres() {
+        $pdo = Connect::seConnecter();
+        $requete = $pdo->query("
+        SELECT nom_genre, COUNT(film_genre.id_genre) AS nb_films, genre.id_genre AS id_genre
+        FROM film_genre 
+        INNER JOIN genre ON film_genre.id_genre = genre.id_genre
+        GROUP BY film_genre.id_genre
+        ");
+        require "view/listGenre.php"; 
+    }
+
+
+// Afficher les details des films
     public function detailFilm($id) {
         $pdo = Connect::seConnecter();
-        // $requeteFilm = $pdo->prepare("
-        // SELECT 
-        // titre, synopsis, duree, note, annee_sortie, affiche_film,
-        // nom, prenom,
-        // nom_genre
-        // FROM film
-        // INNER JOIN realisateur ON film.id_realisateur = realisateur.id_realisateur 
-        // INNER JOIN personne ON realisateur.id_personne = personne.id_personne
-        // INNER JOIN acteur ON personne.id_personne = acteur.id_personne 
-        // INNER JOIN film_genre ON film.id_film = film_genre.id_film
-        // INNER JOIN genre ON film_genre.id_genre = genre.id_genre
-        // WHERE film.id_film = :id 
-        // ");
         $requeteFilm = $pdo->prepare("
         SELECT 
-        titre, synopsis, duree, note, annee_sortie, affiche_film,
+        film.id_film,titre, synopsis, duree, note, annee_sortie, affiche_film,
         nom, prenom,
         nom_genre
-        FROM film
+        FROM film 
         LEFT JOIN realisateur ON film.id_realisateur = realisateur.id_realisateur 
         LEFT JOIN personne ON realisateur.id_personne = personne.id_personne
         LEFT JOIN acteur ON personne.id_personne = acteur.id_personne 
         LEFT JOIN film_genre ON film.id_film = film_genre.id_film
         LEFT JOIN genre ON film_genre.id_genre = genre.id_genre
         WHERE film.id_film = :id
-");
+        ");
         $requeteFilm->execute(['id'=> $id]);
     
         $requeteActeur = $pdo->prepare("
@@ -96,7 +99,18 @@ class CinemaController {
         WHERE film.id_film = :id
         ");
         $requeteGenre->execute(['id'=> $id]);
-        
+
+        // $requeteDelete = $pdo->prepare("
+        // UPDATE film 
+        // SET titre = '',
+        // annee_sortie = '',
+        // duree = '',
+        // synopsis = '',
+        // note = ''
+        // WHERE film.id_film = :id
+        // ");
+        // $requeteDelete->execute(['id'=> $id]);
+
         $genres = $requeteGenre->fetchAll();
         $realisateur = $requeteReal->fetch();
         $acteurs = $requeteActeur->fetchAll();
@@ -104,7 +118,8 @@ class CinemaController {
         require "view/detailFilm.php";
     }
 
-    // Afficher detail acteur 
+
+// Afficher detail acteur 
     public function detailActeur($id) {
         $pdo = Connect::seConnecter();
         $requete = $pdo->prepare("
@@ -123,7 +138,8 @@ class CinemaController {
         require "view/detailActeur.php";
     }
  
-    // Afficher détail réalisateur
+
+// Afficher détail réalisateur
     public function detailRealisateur($id) {
         $pdo = Connect::seConnecter();
         $requeteReal = $pdo->prepare("
@@ -149,19 +165,8 @@ class CinemaController {
         require "view/detailRealisateur.php";
     }
 
-     // Lister les genres
-        public function listGenres() {
-        $pdo = Connect::seConnecter();
-        $requete = $pdo->query("
-        SELECT nom_genre, COUNT(film_genre.id_genre) AS nb_films, genre.id_genre AS id_genre
-        FROM film_genre 
-        INNER JOIN genre ON film_genre.id_genre = genre.id_genre
-        GROUP BY film_genre.id_genre
-        ");
-        require "view/listGenre.php"; 
-    }
 
-    // Afficher les films d'un genre 
+// Afficher les films d'un genre 
     public function detailGenre($id) {
         $pdo = Connect::seConnecter();
         $requete = $pdo->prepare("
@@ -180,15 +185,113 @@ class CinemaController {
         ");
         $requeteFilms->execute(['id'=> $id]);
 
-        $requeteDelete = $pdo->prepare("
-        DELETE FROM genre 
-        WHERE genre.id_genre = :id
-        ");
-        $requeteDelete->execute(['id'=> $id]);
-
         $genre = $requete->fetch();
         $films = $requeteFilms->fetchAll();
         require "view/detailGenre.php"; 
+    }
+
+
+// Affichage de la page "ajouterContenu"
+    public function ajouterContenu() {
+        $pdo = Connect::seConnecter();
+        $requeteGenre = $pdo->query("
+        SELECT nom_genre, id_genre
+        FROM genre 
+        ");
+
+        $requeteReal = $pdo->query("
+        SELECT prenom, nom, id_realisateur AS id_realisateur
+        FROM realisateur 
+        INNER JOIN personne ON realisateur.id_personne = personne.id_personne
+        ");
+
+        $requeteSelectFilm = $pdo->query("
+        SELECT titre, film.id_film AS id_film
+        FROM film 
+        ");
+
+        $requeteCastingtFilm = $pdo->query("
+        SELECT titre, film.id_film AS id_film
+        FROM film 
+        ");
+
+        $requeteRole = $pdo->query("
+        SELECT nom_role, id_role
+        FROM role 
+        ");
+
+        $requeteActeur = $pdo->query("
+        SELECT prenom, nom, acteur.id_acteur AS id_acteur
+        FROM acteur 
+        INNER JOIN personne ON acteur.id_personne = personne.id_personne
+        ");
+        require "view/ajouterContenu.php"; 
+    }
+
+// Supprimer un film 
+public function supprimerFilm($id) {
+    $pdo = Connect::seConnecter();
+    $requeteDelete = $pdo->prepare("
+    DELETE FROM film
+    WHERE id_film = :id
+    ");
+    $requeteDelete->execute(['id'=> $id]);
+
+    header('Location: index.php?action=listFilms');
+    exit;
+}
+
+// Ajouter un genre
+    public function ajouterGenre(){
+        $pdo = Connect::seConnecter();
+        $requete = $pdo->prepare("
+        INSERT INTO genre (nom_genre)
+        VALUES (:nom_genre) 
+        ");
+        $requete->execute([
+            'nom_genre' => $_POST['nom_genre']
+        ]);
+
+        header('Location: index.php?action=ajouterContenu');
+        exit;
+    }
+
+// Ajouter un film 
+    public function ajouterFilm(){
+        $pdo = Connect::seConnecter();
+        $requeteFilm = $pdo->prepare("
+        INSERT INTO film (titre, annee_sortie, film.id_realisateur, synopsis, duree)
+        VALUES (:titre, :annee, :realisateur, :synopsis, :duree)
+        ");
+        $requeteFilm->execute([
+            'titre' => $_POST['titre'],
+            'annee' => $_POST['annee'],
+            'realisateur' => $_POST['realisateur'],
+            'synopsis' => $_POST['synopsis'],
+            'duree' => $_POST['duree']
+        ]);
+
+        header('Location: index.php?action=listFilms');
+        exit;
+    }
+
+// Ajouter une personne
+    public function ajouterPersonne(){
+        $pdo = Connect::seConnecter();
+        $requetePersonne = $pdo->prepare("
+        INSERT INTO personne (nom, prenom, dateDeNaissance, sexe)
+        VALUES (:nom, :prenom, :sexe, :dateDeNaissance, :sexe)
+        ");
+
+        $requetePersonne->execute([
+        'nom' => $_POST['nom'],
+        'prenom' => $_POST['prenom'],
+        'dateDeNaissance' => $_POST['dateDeNaissance'],
+        'sexe' => $_POST['sexe'],
+    ]);
+
+        header('Location: index.php?action=ajouterContenu');
+        exit;
     }
 
 }

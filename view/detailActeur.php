@@ -11,10 +11,12 @@ $dateDeNaissance = $formatter->format(new DateTime($acteur["dateDeNaissance"]));
 
 //  afficher le sexe 
 if (isset($acteur["sexe"]) && $acteur["sexe"] == "M") {
-    $acteur["sexe"] = "Masculin";
+        $acteur["sexe"] = "Masculin";
+    } elseif (isset($acteur["sexe"]) && $acteur["sexe"] == "F") {
+        $acteur["sexe"] = "Feminin";
     } else {
-    $acteur["sexe"] = "Feminin";
-} 
+        $acteur["sexe"] = "Autre";
+    };
 ?>
 
 <section class="personne">
