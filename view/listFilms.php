@@ -9,11 +9,7 @@
                 </tr>
         <?php } ?>
     </section>
-    <div class= boutonDelete>
-    <button class="button" type="button"><a href="index.php?action=ajouterContenu">Ajouter un film</a></button>
-    </div>
-
-
+    
 <?php
 // dans chaque vue ces variables doivent avoir une valeur 
 $titre = "Liste des films";

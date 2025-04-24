@@ -171,6 +171,21 @@ footer {
     text-align: center;
 }
 
+.personnes {
+    display: flex;
+    margin: auto;
+    width: fit-content;
+}
+
+.personne_block1 {
+    padding-right: 50px;
+    border-right: 1px solid white;
+}
+
+.personne_block2 {
+    padding-left: 50px;
+}
+
 /* ***************************************************Détail Acteur + réal ***************************************/
 
 .personne {
@@ -236,7 +251,7 @@ footer {
     justify-content: center;
 }
 
-.add_film, .add_perso, .add_genre, .add_casting {
+.ajouter, .add_perso, .add_genre, .add_casting {
     background-color: var(--netflix_red);
     margin: 50px;    
     padding: 25px;
@@ -248,8 +263,66 @@ footer {
         }
         h2 {
             background-color: var(--low_black);
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             margin: 10px;
+            text-align: center;
+        }
+}
+
+.ajouter {
+    padding: 30px;
+    background-color: var(--netflix_red);
+    border-radius: 10px;
+    width: fit-content;
+    margin: auto;
+        p {
+            margin: 20px 10px;
+        }
+        input {
+            border: none;
+            border-bottom: 1px solid #fff;
+            outline: none;
+            background: transparent;
+        }
+         label {
+            margin: 0;
+        }
+}  
+
+.bouton_envoi {
+    text-align: center;
+        input {
+            background-color: var(--low_black);
+            cursor: pointer;
+            padding: 10px;
+            color: white;
+            border-radius: 10px;
+            font-size: 1.2em;
+            border-bottom: none;
+        }
+}
+
+.bouton_envoi:hover {
+    opacity: 80%;
+    transition: 0.3 ease-in-out;
+}
+
+.info_form label {
+    padding-bottom: 10px;
+}
+
+.ajouterContenus {
+    text-align: center;
+    background-color: var(--netflix_red);
+    border-radius: 10px;
+    padding: 20px;
+    width: fit-content;
+    margin: auto;
+        h2 {
+            padding: 10px;
+            background-color: var(--low_black);
+            border-radius: 10px;
+            margin: 15px;
         }
 }

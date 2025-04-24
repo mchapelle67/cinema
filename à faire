@@ -1,7 +1,9 @@
+terminer fonction update 
 
-créer fonctions associées aux formulaires 
+modifier ajouter PERSONNE et créer formulaire pour ajouter réalisateur uniquement 
+recréer vu sur acteur et réalisateur
 
-créer et ajouter liens pour créer modification
+ajouter fonction supprimer réalisateur et genre 
 
 créer une boucle pour film real et role acteur
 
@@ -9,16 +11,6 @@ créer formulaire de contact
 
 finaliser css
 
-ajouter sur listFilm un bouton: film par genre 
-
 créer vue par formulaire 
 
-permettre plusieurs genre / formulaire
-
-sur ajouter contenus, rediriger vers les differents liens d'ajout
-
-AJOUT : ajouter réalisateur / acteur 
-        ajouter film 
-        ajouter casting 
-        rediriger sur la page du film
-
+filter_input pour sanitize votre saisie afin de lutter contre la faille XSS

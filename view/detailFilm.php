@@ -7,7 +7,7 @@
         <h2><?= $film["titre"] ?></h2>
         <p><?= $film["synopsis"] ?></p>
             <div class="buttons">
-                <button class="button modifier" type="button"><a href="">Modifier ce film</a></button>
+                <button class="button modifier" type="button"><a href="index.php?action=afficherPageUpdate&id=<?= $film["id_film"]?>">Modifier ce film</a></button>
             </div>
     </div>
 </div>
@@ -39,7 +39,7 @@
 
     <div class="info">
         <h3>NOTE</h3>
-            <p><?=$film["note"]?></p>
+            <p><?=$film["note"]?> / 5</p>
     </div>
 
     <div class="info">
@@ -47,7 +47,7 @@
             <p><?=$film["annee_sortie"]?></p>
     </div>
 
-    <a href="index.php?action=supprFilm&id=<?= $film['id_film']?> ">Supprimer ce film</a>
+    <button class="button"><a href="index.php?action=supprFilm&id=<?= $film['id_film']?> ">Supprimer ce film</a></button>
   
 </div>
 </section>

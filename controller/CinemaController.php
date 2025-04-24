@@ -18,29 +18,23 @@ class CinemaController {
     }
     
 
-// Lister les acteurs
-    public function listActeurs() {
+// Lister les personnes
+    public function listPersonnes() {
         $pdo = Connect::seConnecter();
-        $requete = $pdo->query("
+        $requeteActeur = $pdo->query("
         SELECT nom, prenom, acteur.id_acteur AS id_acteur
         FROM acteur
         INNER JOIN personne ON acteur.id_personne = personne.id_personne
         ");
-        require "view/listActeurs.php"; 
-    }
 
-
-// Lister les réalisateurs
-    public function listRealisateurs() {
-        $pdo = Connect::seConnecter();
-        $requete = $pdo->query("
+        $requeteReal = $pdo->query("
         SELECT nom, prenom, realisateur.id_realisateur AS id_real
         FROM realisateur
         INNER JOIN personne ON realisateur.id_personne = personne.id_personne
         ");
-        require "view/listRealisateurs.php"; 
-    }
 
+        require "view/listPersonnes.php"; 
+    }
 
 // Lister les genres
     public function listGenres() {
@@ -53,7 +47,6 @@ class CinemaController {
         ");
         require "view/listGenre.php"; 
     }
-
 
 // Afficher les details des films
     public function detailFilm($id) {
@@ -100,17 +93,6 @@ class CinemaController {
         WHERE film.id_film = :id
         ");
         $requeteGenre->execute(['id'=> $id]);
-
-        // $requeteDelete = $pdo->prepare("
-        // UPDATE film 
-        // SET titre = '',
-        // annee_sortie = '',
-        // duree = '',
-        // synopsis = '',
-        // note = ''
-        // WHERE film.id_film = :id
-        // ");
-        // $requeteDelete->execute(['id'=> $id]);
 
         $genres = $requeteGenre->fetchAll();
         $realisateur = $requeteReal->fetch();
@@ -190,16 +172,16 @@ class CinemaController {
         $films = $requeteFilms->fetchAll();
         require "view/detailGenre.php"; 
     }
-
+    
+// Affichage de la page Ajout Contenus
+        public function ajouterContenu(){
+            require "view/ajouterContenu.php";
+        }
 
 // Affichage de la page d'ajout film
     public function afficherAjoutFilm() {
         $pdo = Connect::seConnecter();
         $requeteGenre = $pdo->query("
-        SELECT nom_genre, id_genre
-        FROM genre 
-        ");
-        $requeteGenre2 = $pdo->query("
         SELECT nom_genre, id_genre
         FROM genre 
         ");
@@ -217,6 +199,48 @@ class CinemaController {
 
         require "view/afficherAjoutFilm.php"; 
     }
+
+// Affichage de la page d'ajout personne
+    public function afficherAjoutPersonne(){
+        require "view/afficherAjoutPersonne.php";
+    }
+
+// Affichage de la page d'ajout genre
+    public function afficherAjoutGenre(){
+        require "view/afficherAjoutGenre.php";
+    }
+
+// Affichage de la page UPDATE 
+    public function afficherPageUpdate($id){
+        $pdo = Connect::seConnecter();
+        $requeteFilm = $pdo->prepare("
+        SELECT titre, id_film, annee_sortie, duree
+        FROM film
+        WHERE id_film = :id
+        ");
+        $requeteFilm->execute(['id'=> $id]);
+
+        $requeteActeur = $pdo->query("
+        SELECT prenom, nom, id_acteur
+        FROM acteur 
+        INNER JOIN personne ON acteur.id_personne = personne.id_personne
+        ");
+
+        $requeteReal = $pdo->query("
+        SELECT prenom, nom, id_realisateur
+        FROM realisateur 
+        INNER JOIN personne ON realisateur.id_personne = personne.id_personne
+        ");
+
+        $requeteGenre = $pdo->query("
+        SELECT nom_genre, id_genre
+        FROM genre 
+        ");
+        $film = $requeteFilm->fetch();
+
+        require "view/afficherPageUpdate.php";
+    }
+
 
 // ***************************************** FONCTIONS ******************************************************
 // Supprimer un film 
@@ -243,7 +267,7 @@ public function supprimerFilm($id) {
             'nom_genre' => $_POST['nom_genre']
         ]);
 
-        header('Location: index.php?action=ajouterContenu');
+        header('Location: index.php?action=afficherAjoutGenre');
         exit;
     }
 
@@ -285,18 +309,48 @@ public function supprimerFilm($id) {
     public function ajouterPersonne(){
         $pdo = Connect::seConnecter();
         $requetePersonne = $pdo->prepare("
-        INSERT INTO personne (nom, prenom, dateDeNaissance, sexe)
-        VALUES (:nom, :prenom, :sexe, :dateDeNaissance, :sexe)
+        INSERT INTO personne (nom, prenom, dateDeNaissance, sexe, photo)
+        VALUES (:nom, :prenom, :dateNaissance, :sexe, :photo)
         ");
 
         $requetePersonne->execute([
         'nom' => $_POST['nom'],
         'prenom' => $_POST['prenom'],
-        'dateDeNaissance' => $_POST['dateDeNaissance'],
+        'dateNaissance' => $_POST['dateNaissance'],
         'sexe' => $_POST['sexe'],
-    ]);
+        'photo' => $_POST['photo']
+        ]);    
 
-        header('Location: index.php?action=ajouterContenu');
+        header('Location:index.php?action=ajouterContenu');
+        exit;
+    }
+// Modifier un film 
+    public function updateFilm(){
+        $pdo = Connect::seConnecter();
+        $requeteUpdateFilm = $pdo->prepare("
+        UPDATE film 
+        SET titre = :titre,
+            synopsis = :synopsis,
+            duree = :duree,
+            note = :note,
+            annee_sortie = :annee
+            id_realisateur = :realisateur
+        WHERE id_film = :id
+        ");
+        
+        $requeteUpdateFilm->execute([
+            'titre' => $_POST['titre'],
+            'synopsis' => $_POST['synopsis'],
+            'duree' => $_POST['duree'],
+            'note' => $_POST['note'],
+            'annee_sortie' => $_POST['annee'],
+            'id_realisateur' => $_POST['realisateur'],
+            'id_film' => $_POST['id_film']
+        ]);
+
+        var_dump($_POST); // Affiche tout le contenu de $_POST
+        die(); 
+        header('Location:index.php?action=listFilms');
         exit;
     }
 

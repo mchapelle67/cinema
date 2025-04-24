@@ -32,8 +32,8 @@ if (isset($page) && $page === "detailFilm" && !empty($backgroundImage)) {
             <nav>
                 <a href="index.php?action=listFilms">FILMS</a>
                 <a href="index.php?action=ajouterContenu">AJOUTER</a>
-                <a href="index.php?action=listActeurs">ACTEURS</a>
-                <a href="index.php?action=listRealisateurs">REALISATEURS</a>
+                <a href="index.php?action=listPersonnes">PERSONNES</a>
+                <a href="index.php?action=listGenre">GENRES</a>
             </nav>
         </div>   
     </header> 

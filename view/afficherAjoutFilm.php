@@ -2,52 +2,52 @@
 ?> 
 
 <section class="add">
-    <div class="add_film">
+    <div class="ajouter film">
         <h2>AJOUTER UN FILM</h2>
 
         <form action="index.php?action=ajouterFilm" method="post">
-            <label for="titre">Titre*</label>
-                <input type="text" name="titre" required> 
+        
+            <p><label for="titre">Titre*</label>
+                <input type="text" name="titre" required></p>
 
-            <label for="annee">Année sortie*</label>
-                <input type="number" name="annee" min="1900" max="2050" step="1" required>
+            <p><label for="annee">Année sortie*</label>
+                <input type="number" name="annee" min="1900" max="2050" step="1" required></p>
 
-            <label for="genres">Genres*</label>
+            <span class="info_form"><p><label for="genres">Genres*</label>
                 <select name="genres[]" id="genres" multiple required> 
                     <?php foreach ($requeteGenre->fetchAll() as $genre) { ?>
                         <option value="<?= $genre["id_genre"] ?>"><?= $genre["nom_genre"] ?></option>
-                    <?php } ?>
-                </select>
+                        <?php } ?>
+                </select></p></span>
 
-            <label for="realisateur">Réalisateur*</label>
+            <span class="info_form"><p><label for="synopsis">Synopsis</label>
+                <textarea name="synopsis"></textarea></p></span>
+
+            <p><label for="duree">Durée (mn)*</label>
+                <input type="number" name="duree" required></p>
+
+            <span class="info_form"><p><label for="realisateur">Réalisateur*</label>
                 <select name="realisateur" id="realisateur" required>
                     <?php foreach ($requeteReal->fetchAll() as $real) { ?>
-                            <option value="<?= $real["id_realisateur"] ?>"><?= $real["prenom"]." ".$real["nom"] ?></option>
+                        <option value="<?= $real["id_realisateur"] ?>"><?= $real["prenom"]." ".$real["nom"] ?></option>
                     <?php } ?>
-                </select>
+                </select></p></span>
+        
+            <p><label for="affiche">Affiche</label>
+                <input type="text" name="affiche"></p>
 
-                <label for="duree">Durée (mn)*</label>
-                    <input type="number" name="duree" required> 
-
-            <label for="synopsis">Synopsis</label>
-                <textarea name="synopsis"></textarea>
-
-            <label for="role">Rôle</label>
-                <input type="text" name="role"> 
-
-            <label for="affiche">Affiche</label>
-                <input type="text" name="affiche" placeholder="Ex: fichier.jpg"> 
-            
-            <label for="note">Note</label>
+            <span class="info_form"><p><label for="note">Note</label>
                 <select name="note" id="note">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
-                </select>
-
-            <input type="submit" name="submit" value="Ajouter le film">
+                </select></p></span>
+    
+        <div class="bouton_envoi">
+            <input type="submit" name="submit" value="AJOUTER">  
+        </div>
         </form>
     </div>
 </section>

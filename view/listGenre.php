@@ -8,9 +8,6 @@
                     <p><a href="index.php?action=detailGenre&id=<?= $genre["id_genre"]?>"><?= $genre["nom_genre"]." - ".$genre["nb_films"] ?></a></p>
                 </tr>
         <?php } ?>
-
-        <a href="index.php?action=ajouterContenu">Ajouter un genre</a>
-
 </section>
 
 <?php
