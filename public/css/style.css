@@ -233,13 +233,23 @@ footer {
 /************************************************************ AJOUT CONTENU ********************************************************* */
 .add {
     display: flex;
+    justify-content: center;
 }
 
-.add_film, .add_perso, .add_genre,.add_casting {
+.add_film, .add_perso, .add_genre, .add_casting {
     background-color: var(--netflix_red);
-    margin: 50px;
+    margin: 50px;    
+    padding: 25px;
+    border-radius: 10px;
         label {
             display: flex;
             flex-direction: column;
+            margin: 10px;
+        }
+        h2 {
+            background-color: var(--low_black);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px;
         }
 }

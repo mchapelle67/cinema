@@ -5,6 +5,7 @@ use Model\Connect; //permet d'accéder à la class Connect située dans le names
 
 class CinemaController {
     
+//****************************************** AFFICHAGE **************************************** */
 // Lister les films
     public function listFilms() {
         $pdo = Connect::seConnecter();
@@ -191,10 +192,14 @@ class CinemaController {
     }
 
 
-// Affichage de la page "ajouterContenu"
-    public function ajouterContenu() {
+// Affichage de la page d'ajout film
+    public function afficherAjoutFilm() {
         $pdo = Connect::seConnecter();
         $requeteGenre = $pdo->query("
+        SELECT nom_genre, id_genre
+        FROM genre 
+        ");
+        $requeteGenre2 = $pdo->query("
         SELECT nom_genre, id_genre
         FROM genre 
         ");
@@ -210,24 +215,10 @@ class CinemaController {
         FROM film 
         ");
 
-        $requeteCastingtFilm = $pdo->query("
-        SELECT titre, film.id_film AS id_film
-        FROM film 
-        ");
-
-        $requeteRole = $pdo->query("
-        SELECT nom_role, id_role
-        FROM role 
-        ");
-
-        $requeteActeur = $pdo->query("
-        SELECT prenom, nom, acteur.id_acteur AS id_acteur
-        FROM acteur 
-        INNER JOIN personne ON acteur.id_personne = personne.id_personne
-        ");
-        require "view/ajouterContenu.php"; 
+        require "view/afficherAjoutFilm.php"; 
     }
 
+// ***************************************** FONCTIONS ******************************************************
 // Supprimer un film 
 public function supprimerFilm($id) {
     $pdo = Connect::seConnecter();
@@ -259,17 +250,32 @@ public function supprimerFilm($id) {
 // Ajouter un film 
     public function ajouterFilm(){
         $pdo = Connect::seConnecter();
-        $requeteFilm = $pdo->prepare("
-        INSERT INTO film (titre, annee_sortie, film.id_realisateur, synopsis, duree)
-        VALUES (:titre, :annee, :realisateur, :synopsis, :duree)
+        $requeteAjoutFilm = $pdo->prepare("
+        INSERT INTO film (titre, annee_sortie, id_realisateur, synopsis, duree, affiche_film, note)
+        VALUES (:titre, :annee, :realisateur, :synopsis, :duree, :affiche, :note)
         ");
-        $requeteFilm->execute([
+        $requeteAjoutFilm->execute([
             'titre' => $_POST['titre'],
             'annee' => $_POST['annee'],
             'realisateur' => $_POST['realisateur'],
             'synopsis' => $_POST['synopsis'],
-            'duree' => $_POST['duree']
+            'duree' => $_POST['duree'],
+            'affiche' => $_POST['affiche'],
+            'note' => $_POST['note']
         ]);
+
+        $idFilm = $pdo->lastInsertId();
+
+        $requeteAjoutFilm_Genre = $pdo->prepare("
+        INSERT INTO film_genre (id_film, id_genre)
+        VALUES (:id_film, :genre)
+        ");
+        foreach ($_POST['genres'] as $idGenre){
+            $requeteAjoutFilm_Genre->execute([
+                'id_film' => $idFilm,
+                'genre' => $idGenre
+            ]);
+        };
 
         header('Location: index.php?action=listFilms');
         exit;

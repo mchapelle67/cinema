@@ -1,7 +1,7 @@
 
 créer fonctions associées aux formulaires 
 
-ajouter liens pour créer modification
+créer et ajouter liens pour créer modification
 
 créer une boucle pour film real et role acteur
 
@@ -14,3 +14,11 @@ ajouter sur listFilm un bouton: film par genre
 créer vue par formulaire 
 
 permettre plusieurs genre / formulaire
+
+sur ajouter contenus, rediriger vers les differents liens d'ajout
+
+AJOUT : ajouter réalisateur / acteur 
+        ajouter film 
+        ajouter casting 
+        rediriger sur la page du film
+
