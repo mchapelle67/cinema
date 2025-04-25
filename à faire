@@ -1,16 +1,5 @@
 terminer fonction update 
 
-modifier ajouter PERSONNE et créer formulaire pour ajouter réalisateur uniquement 
-recréer vu sur acteur et réalisateur
-
-ajouter fonction supprimer réalisateur et genre 
-
-créer une boucle pour film real et role acteur
-
-créer formulaire de contact
-
-finaliser css
-
-créer vue par formulaire 
-
 filter_input pour sanitize votre saisie afin de lutter contre la faille XSS
+
+comment gérer l'affichage des réalisateurs sans film ? 

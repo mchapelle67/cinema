@@ -2,15 +2,17 @@
 ?> 
 
 <section class="add">
-<div class="add_genre">
+<div class="ajouter genre">
         <h2>AJOUTER UN GENRE</h2>
             <form action="index.php?action=ajouterGenre" method="post">
-                <label for="nom_genre">Genre</label>
-                    <input type="text" name="nom_genre" required>
+                <p><label for="nom_genre">Genre</label>
+                    <input type="text" name="nom_genre" required><p>
             
+        <div class="bouton_envoi">
             <input type="submit" name="submit" value="Ajouter le genre">
+        </div>
             </form>
-    </div>
+</div>
 </section>
     
 <?php

@@ -29,7 +29,10 @@ if (isset($acteur["sexe"]) && $acteur["sexe"] == "M") {
     <div class="infosPersonne">
         <p>Date de naissance:</p> <?= $dateDeNaissance ?>
         <p>Sexe:</p> <?= $acteur["sexe"] ?>
-        <p>Rôle:</p> <?= $acteur["nom_role"]?> dans <a href="index.php?action=detailFilm&id=<?= $acteur["id_film"]?>"><?= $acteur["titre"] ?></a>
+        <p>Rôle:</p> 
+            <?php foreach ($requeteFilm->fetchAll() as $film) { ?>
+                <p><?= $film["nom_role"]?> dans <a href="index.php?action=detailFilm&id=<?= $film["id_film"]?>"><?= $film["titre"] ?></a></p>
+            <?php } ?>
     </div>
     
 </section >

@@ -36,5 +36,6 @@ if(isset($_GET["action"])){
         case "ajouterGenre": $ctrlCinema->ajouterGenre(); break;
         case "afficherPageUpdate": $ctrlCinema->afficherPageUpdate($id); break;
         case "updateFilm": $ctrlCinema->updateFilm($id); break;
+        case "supprimerPerso": $ctrlCinema->supprimerPerso($id); break;
     }
 }

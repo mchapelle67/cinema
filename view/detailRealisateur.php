@@ -1,4 +1,6 @@
 <?php ob_start(); // on commence chaque vue comme ça
+
+// met date en français
 $formatter = new IntlDateFormatter(
     'fr_FR',              // langue + pays
     IntlDateFormatter::LONG, // format long : 21 avril 2025
@@ -7,11 +9,19 @@ $formatter = new IntlDateFormatter(
 
 $dateDeNaissance = $formatter->format(new DateTime($realisateur["dateDeNaissance"]));
  
+// traduis le sexe 
 if (isset($realisateur["sexe"]) && $realisateur["sexe"] == "M") {
-    $realisateur["sexe"] = "Masculin";
-    } else {
+        $realisateur["sexe"] = "Masculin";
+    } elseif (isset($realisateur["sexe"]) && $realisateur["sexe"] == "F") {
     $realisateur["sexe"] = "Feminin";
-} 
+    } else {
+        $realisateur["sexe"] ="Autre";
+    };
+
+// evite le bug si filmographie vide
+    // if(empty($realisateur['id_film'])) {
+    //     echo "Filmographie non repertoriée";
+    // };
 ?>
 
 <section class="personne">
@@ -25,9 +35,13 @@ if (isset($realisateur["sexe"]) && $realisateur["sexe"] == "M") {
         <p>Date de naissance:</p> <?= $dateDeNaissance ?>
         <p>Sexe:</p> <?= $realisateur["sexe"] ?>
         <p>Filmographie:</p>
-                <p><a href="index.php?action=detailFilm&id=<?= $realisateur["id_film"]?>"><?= $realisateur["titre"] ?></a></p>
+                <?php foreach ($requeteFilm->fetchAll() as $film) { ?>
+                        <p><a href="index.php?action=detailFilm&id=<?= $film["id_film"]?>"><?= $film["titre"] ?></a></p>
+               <?php }; ?>
     </div>
-    
+
+<button class="button"><a href="index.php?action=supprimerPerso&id=<?= $realisateur['id_personne']?>">Supprimer ce réalisateur</a></button>
+
 </section >
 
 <?php

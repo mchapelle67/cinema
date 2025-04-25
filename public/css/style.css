@@ -251,7 +251,7 @@ footer {
     justify-content: center;
 }
 
-.ajouter, .add_perso, .add_genre, .add_casting {
+.ajouter {
     background-color: var(--netflix_red);
     margin: 50px;    
     padding: 25px;

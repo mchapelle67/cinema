@@ -2,30 +2,35 @@
 ?> 
 
 <section class="add">
-    <div class="add_perso">
+    <div class="ajouter perso">
         <h2>AJOUTER UN REALISATEUR</h2>
             <form action="index.php?action=ajouterPersonne" method="post">
-                <label for="nom">Nom*</label>
-                    <input type="text" name="nom" required> 
 
-                <label for="prenom">Prénom*</label>
-                    <input type="text" name="prenom" required> 
+            <input type="hidden" name="id_real">
 
-                <label for="dateNaissance">Date de naissance</label>
-                    <input type="date" name="dateNaissance">
+                <p><label for="nom">Nom*</label>
+                    <input type="text" name="nom" required></p>
+
+                <p><label for="prenom">Prénom*</label>
+                    <input type="text" name="prenom" required></p> 
+
+                <p><label for="dateNaissance">Date de naissanceµ</label>
+                    <input type="date" name="dateNaissance"></p>
                     
-                <h3>Sexe</h3>
-                <label for="femme">Femme</label>
+                <h3>Sexe*</h3>
+                <p><label for="femme">Femme</label>
                     <input type="radio" name="sexe" value="F" id="F"> 
                 <label for="homme">Homme</label>
                     <input type="radio" name="sexe" value="H" id="H"> 
                 <label for="autre">Autre</label>    
-                    <input type="radio" name="sexe" value="A" id="A"> 
+                    <input type="radio" name="sexe" value="A" id="A"></p> 
 
-                <label for="photo">Photo</label>
-                    <input type="text" name="photo"> 
+                <p><label for="photo">Photo</label>
+                    <input type="text" name="photo"></p>
 
+            <div class="bouton_envoi">
                 <input type="submit" name="submit" value="AJOUTER">
+            </div>
                     
             </form>
     </div>
