@@ -228,7 +228,7 @@ class CinemaController {
     public function afficherPageUpdate($id){
         $pdo = Connect::seConnecter();
         $requeteFilm = $pdo->prepare("
-        SELECT titre, annee_sortie, duree, id_film
+        SELECT titre, annee_sortie, duree, id_film, synopsis, note
         FROM film
         WHERE id_film = :id
         ");
@@ -382,16 +382,55 @@ public function supprimerPerso($id) {
         $pdo = Connect::seConnecter();
         $titre = filter_input(INPUT_POST, 'titre', FILTER_SANITIZE_SPECIAL_CHARS);
         $synopsis = filter_input(INPUT_POST, 'synopsis', FILTER_SANITIZE_SPECIAL_CHARS);
-    
+   
+        $note = $pdo->prepare("
+        SELECT note FROM film WHERE id_film = :id");
+        $note->execute(['id' => $id]);
+        $newNote = $note->fetch(); 
+        
+        if (isset($_POST['note'])) {
+            $newNoteValue = $_POST['note'];
+            if ($newNoteValue !== '') {
+                $requeteUpdateNote = $pdo->prepare("
+                UPDATE film SET note = :note WHERE id_film = :id");
+                $requeteUpdateNote->execute(['note' => $newNoteValue, 'id' => $id]);
+            }
+        } else {
+            $currentNote = isset($newNote['note']) ? $newNote['note'] : null;
+                if ($currentNote !== null) {
+                    $requeteNote = $pdo->prepare("
+                    UPDATE film SET note = :note WHERE id_film = :id");
+                    $requeteNote->execute(['note' => $currentNote, 'id' => $id]); }
+        };  
+
+        
+        $realisateur = $pdo->prepare("
+        SELECT id_realisateur FROM film WHERE id_film = :id");
+        $realisateur->execute(['id' => $id]);
+        $newReal = $realisateur->fetch();
+
+        if (isset($_POST['realisateur'])) {
+            $newRealValue = $_POST['realisateur'];
+                if (($newRealValue) !== '') {
+                    $requeteUpdateReal = $pdo->prepare("
+                    UPDATE film SET id_realisateur = :realisateur WHERE id_film = :id");
+                    $requeteUpdateReal->execute(['realisateur' => $newRealValue, 'id' => $id]);
+                }
+        } else { 
+            $currentReal = isset($newReal['realisateur']) ? $newReal['realisateur'] : null;
+                if ($currentReal !== null) {
+                    $requeteReal = $pdo->preparer("
+                    UPDATE film SET id_realisateur = :realisateur WHERE id_film = :id");
+                    $requeteReal->execute(['realisateur' => $currentReal, 'id' => $id]);
+                }
+        };
 
         $requeteUpdateFilm = $pdo->prepare("
         UPDATE film 
         SET titre = :titre,
             synopsis = :synopsis,
             duree = :duree,
-            note = :note,
-            annee_sortie = :annee,
-            id_realisateur = :realisateur
+            annee_sortie = :annee
         WHERE id_film = :id
         ");
 
@@ -399,9 +438,7 @@ public function supprimerPerso($id) {
             'titre' => $titre,
             'synopsis' => $synopsis,
             'duree' => $_POST['duree'],
-            'note' => $_POST['note'],
             'annee' => $_POST['annee'],
-            'realisateur' => $_POST['realisateur'],
             'id' => $id
         ]);
         
@@ -427,6 +464,7 @@ public function supprimerPerso($id) {
     }
 }
 
+// CORRECTION DE LA FONCTION UPDATE
 // public function editMovie($id)
     // {
     //     if (!Service::exists("movie", $id)) {

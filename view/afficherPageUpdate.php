@@ -8,12 +8,13 @@
 
                
            <p><label for="titre">Titre</label>
-                <input type="text" name="titre" placeholder="<?= $film["titre"] ?>"></p>
+                <input type="text" name="titre" value="<?= $film["titre"] ?>"></p>
             <p><label for="synopsis">Synopsis</label>
-                <textarea name="synopsis"></textarea></p>
+                <textarea name="synopsis"><?= $film["synopsis"] ?></textarea></p>
 
             <p><label for="realisateur">Réalisateur</label>
                 <select name="realisateur" id="realisateur">
+                    <option value=""></option>
                     <?php foreach ($requeteReal->fetchAll() as $real) { ?>
                         <option value="<?= $real["id_realisateur"] ?>"><?= $real["prenom"]." ".$real["nom"] ?></option>
                     <?php } ?>
@@ -27,10 +28,11 @@
                 </select></p>
 
             <p><label for="duree">Durée</label>
-                <input type="number" name="duree"></p>
+                <input type="number" name="duree" value="<?= $film["duree"] ?>"></p>
 
             <p><label for="note">Note</label>
-                    <select name="note" id="note">
+                    <select name="note" id="note" value="<?= $film['note'] ?>">
+                        <option value=""></option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -39,7 +41,7 @@
                     </select></p>
 
             <p><label for="annee">Année sortie</label>
-                    <input type="number" name="annee" min="1900" max="2050" step="1"></p>
+                    <input type="number" name="annee" min="1900" max="2050" step="1" value="<?= $film["annee_sortie"] ?>"></p>
 
             <div class="bouton_envoi">
                 <input type="submit" name="submit" value="Modifier ce film">
