@@ -10,7 +10,7 @@ img{
 body {
     background-color: rgb(0, 0, 0);
     color: white;
-    font-family: 'Raleway'
+    font-family: 'Raleway';
 }
 
 :root {
@@ -26,6 +26,11 @@ a {
 a:hover {
     opacity: 0.7;
 }
+
+::placeholder {
+    color: rgb(255, 255, 255);
+    opacity: 0.5;
+  }
 
 /* ***************************************NAVIGATEUR***************************************** */
 #navigateur {
@@ -252,15 +257,11 @@ footer {
 }
 
 .ajouter {
+    padding: 20px;
     background-color: var(--netflix_red);
-    margin: 50px;    
-    padding: 25px;
     border-radius: 10px;
-        label {
-            display: flex;
-            flex-direction: column;
-            margin: 10px;
-        }
+    width: fit-content;
+    margin: auto;
         h2 {
             background-color: var(--low_black);
             padding: 20px;
@@ -268,14 +269,6 @@ footer {
             margin: 10px;
             text-align: center;
         }
-}
-
-.ajouter {
-    padding: 30px;
-    background-color: var(--netflix_red);
-    border-radius: 10px;
-    width: fit-content;
-    margin: auto;
         p {
             margin: 20px 10px;
         }
@@ -287,6 +280,9 @@ footer {
         }
          label {
             margin: 0;
+            display: flex;
+            flex-direction: column;
+
         }
 }  
 
@@ -318,7 +314,7 @@ footer {
     border-radius: 10px;
     padding: 20px;
     width: fit-content;
-    margin: auto;
+    margin: 220px auto;
         h2 {
             padding: 10px;
             background-color: var(--low_black);

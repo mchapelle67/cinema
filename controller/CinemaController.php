@@ -145,15 +145,20 @@ class CinemaController {
         WHERE realisateur.id_realisateur = :id 
         ");
         $requeteReal->execute(['id'=> $id]);
-
-        $requeteFilm = $pdo->prepare("
-        SELECT film.id_film AS id_film, titre
-        FROM film
-        WHERE film.id_realisateur = :id 
-        ");
-        $requeteFilm->execute(['id'=> $id]);
-
         $realisateur = $requeteReal->fetch();
+
+        if(isset($realisateur['id_film'])) {
+        $requeteFilm = $pdo->prepare("
+            SELECT film.id_film AS id_film, titre
+            FROM film
+            WHERE film.id_realisateur = :id 
+            ");
+        $requeteFilm->execute(['id'=> $id]);
+         } else {
+            echo "Filmographie non repertoriée";
+
+        };
+        
         require "view/detailRealisateur.php";
     }
 
@@ -182,7 +187,7 @@ class CinemaController {
         require "view/detailGenre.php"; 
     }
     
-// Affichage de la page Ajout Contenus
+// Affichage de la page d'ajouts de contenus
         public function ajouterContenu(){
             require "view/ajouterContenu.php";
         }
@@ -223,17 +228,11 @@ class CinemaController {
     public function afficherPageUpdate($id){
         $pdo = Connect::seConnecter();
         $requeteFilm = $pdo->prepare("
-        SELECT titre, id_film, annee_sortie, duree
+        SELECT titre, annee_sortie, duree, id_film
         FROM film
         WHERE id_film = :id
         ");
         $requeteFilm->execute(['id'=> $id]);
-
-        $requeteActeur = $pdo->query("
-        SELECT prenom, nom, id_acteur
-        FROM acteur 
-        INNER JOIN personne ON acteur.id_personne = personne.id_personne
-        ");
 
         $requeteReal = $pdo->query("
         SELECT prenom, nom, id_realisateur
@@ -245,8 +244,14 @@ class CinemaController {
         SELECT nom_genre, id_genre
         FROM genre 
         ");
-        $film = $requeteFilm->fetch();
 
+        $requeteFilmGenre = $pdo->query("
+        SELECT id_film, id_genre 
+        FROM film_genre
+        ");
+        
+        
+        $film = $requeteFilm->fetch();
         require "view/afficherPageUpdate.php";
     }
 
@@ -281,12 +286,14 @@ public function supprimerPerso($id) {
 // Ajouter un genre
     public function ajouterGenre(){
         $pdo = Connect::seConnecter();
+        $genre = filter_input(INPUT_POST, 'nom_genre', FILTER_SANITIZE_SPECIAL_CHARS);
+
         $requete = $pdo->prepare("
         INSERT INTO genre (nom_genre)
         VALUES (:nom_genre) 
         ");
         $requete->execute([
-            'nom_genre' => $_POST['nom_genre']
+            'nom_genre' => $genre
         ]);
 
         header('Location: index.php?action=ajouterContenu');
@@ -296,17 +303,24 @@ public function supprimerPerso($id) {
 // Ajouter un film 
     public function ajouterFilm(){
         $pdo = Connect::seConnecter();
+
+        $titre = filter_input(INPUT_POST, 'titre', FILTER_SANITIZE_SPECIAL_CHARS);
+        $synopsis = filter_input(INPUT_POST, 'synopsis', FILTER_SANITIZE_SPECIAL_CHARS);
+        $affiche = filter_input(INPUT_POST, 'affiche', FILTER_SANITIZE_SPECIAL_CHARS);
+
         $requeteAjoutFilm = $pdo->prepare("
         INSERT INTO film (titre, annee_sortie, id_realisateur, synopsis, duree, affiche_film, note)
         VALUES (:titre, :annee, :realisateur, :synopsis, :duree, :affiche, :note)
         ");
+        
+
         $requeteAjoutFilm->execute([
-            'titre' => $_POST['titre'],
+            'titre' => $titre,
             'annee' => $_POST['annee'],
             'realisateur' => $_POST['realisateur'],
-            'synopsis' => $_POST['synopsis'],
+            'synopsis' => $synopsis,
             'duree' => $_POST['duree'],
-            'affiche' => $_POST['affiche'],
+            'affiche' => $affiche,
             'note' => $_POST['note']
         ]);
 
@@ -330,17 +344,21 @@ public function supprimerPerso($id) {
 // Ajouter une personne
     public function ajouterPersonne(){
         $pdo = Connect::seConnecter();
+        $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_SPECIAL_CHARS);
+        $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_SPECIAL_CHARS);
+        $photo = filter_input(INPUT_POST, 'photo', FILTER_SANITIZE_SPECIAL_CHARS);
+        
         $requetePersonne = $pdo->prepare("
         INSERT INTO personne (nom, prenom, dateDeNaissance, sexe, photo)
         VALUES (:nom, :prenom, :dateNaissance, :sexe, :photo)
         ");
 
         $requetePersonne->execute([
-        'nom' => $_POST['nom'],
-        'prenom' => $_POST['prenom'],
+        'nom' => $nom,
+        'prenom' => $prenom,
         'dateNaissance' => $_POST['dateNaissance'],
         'sexe' => $_POST['sexe'],
-        'photo' => $_POST['photo']
+        'photo' => $photo
         ]);    
 
         $idPersonne = $pdo->lastInsertId();
@@ -354,38 +372,219 @@ public function supprimerPerso($id) {
             'id_personne' => $idPersonne
         ]);
     
-
         header('Location:index.php?action=ajouterContenu');
         exit;
     }
+
+
 // Modifier un film 
-    public function updateFilm(){
+    public function updateFilm($id){
         $pdo = Connect::seConnecter();
+        $titre = filter_input(INPUT_POST, 'titre', FILTER_SANITIZE_SPECIAL_CHARS);
+        $synopsis = filter_input(INPUT_POST, 'synopsis', FILTER_SANITIZE_SPECIAL_CHARS);
+    
+
         $requeteUpdateFilm = $pdo->prepare("
         UPDATE film 
         SET titre = :titre,
             synopsis = :synopsis,
             duree = :duree,
             note = :note,
-            annee_sortie = :annee
+            annee_sortie = :annee,
             id_realisateur = :realisateur
         WHERE id_film = :id
         ");
-        
+
         $requeteUpdateFilm->execute([
-            'titre' => $_POST['titre'],
-            'synopsis' => $_POST['synopsis'],
+            'titre' => $titre,
+            'synopsis' => $synopsis,
             'duree' => $_POST['duree'],
             'note' => $_POST['note'],
-            'annee_sortie' => $_POST['annee'],
-            'id_realisateur' => $_POST['realisateur'],
-            'id_film' => $_POST['id_film']
+            'annee' => $_POST['annee'],
+            'realisateur' => $_POST['realisateur'],
+            'id' => $id
         ]);
+        
+        $requeteDeleteGenre = $pdo->prepare("
+        DELETE FROM film_genre
+        WHERE id_film = :id
+        ");
+        $requeteDeleteGenre->execute(['id' => $id]);
 
-        var_dump($_POST); // Affiche tout le contenu de $_POST
-        die(); 
+        foreach ($_POST['genres'] as $idGenre){
+            $requeteUpdateGenre = $pdo->prepare("
+                INSERT INTO film_genre (id_film, id_genre)
+                VALUES (:id_film, :id_genre)
+                ");
+            $requeteUpdateGenre->execute([
+                'id_film' => $id,
+                'id_genre' => $idGenre
+            ]);
+        };
+
         header('Location:index.php?action=listFilms');
         exit;
     }
-
 }
+
+// public function editMovie($id)
+    // {
+    //     if (!Service::exists("movie", $id)) {
+    //         header("Location:index.php");
+    //         exit;
+    //     } else {
+    //         $session = new Session();
+    //         if ($session->isAdmin()) {
+    //             $pdo = Connect::toLogIn();
+
+    //             $requestMovie = $pdo->prepare("
+    //     SELECT movie.idMovie, movie.title, movie.releaseYear, movie.duration, movie.note, movie.synopsis, movie.poster, movie.idDirector
+    //     FROM movie
+    //     WHERE movie.idMovie = :id
+    //     ");
+    //             $requestMovie->execute(["id" => $id]);
+
+    //             $requestDirectors = $pdo->query("
+    //     SELECT director.idDirector, person.firstname, person.surname
+    //     FROM director
+    //     INNER JOIN person ON director.idPerson = person.idPerson
+    //     ORDER BY surname
+    //     ");
+
+    //             $requestThemes = $pdo->query("
+    //     SELECT theme.idTheme, theme.typeName
+    //     FROM theme
+    //     ORDER BY typeName
+    //     ");
+
+    //             $requestMovieThemes = $pdo->prepare("
+    //     SELECT theme.idTheme
+    //     FROM movie_theme
+    //     INNER JOIN theme ON movie_theme.idTheme = theme.idTheme
+    //     INNER JOIN movie ON movie_theme.idMovie = movie.idMovie
+    //     WHERE movie.idMovie = :id
+    //     ");
+    //             $requestMovieThemes->execute(["id" => $id]);
+
+    //             $themes = $requestMovieThemes->fetchAll();
+    //             $themesMovie = [];
+    //             foreach ($themes as $t) {
+    //                 $themesMovie[] = $t["idTheme"];
+    //             }
+
+    //             if (isset($_POST['submit'])) {
+
+    //                 $newTitle = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    //                 $newReleaseYear = filter_input(INPUT_POST, "releaseYear", FILTER_VALIDATE_INT);
+    //                 $newDuration = filter_input(INPUT_POST, "duration", FILTER_VALIDATE_INT);
+    //                 $newNote = filter_input(INPUT_POST, "note", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    //                 $newSynopsis = filter_input(INPUT_POST, "synopsis", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    //                 $newDirector = filter_input(INPUT_POST, "idDirector", FILTER_SANITIZE_NUMBER_INT);
+
+    //                 if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+    //                     $tmpName = $_FILES['file']['tmp_name'];
+    //                     $name = $_FILES['file']['name'];
+    //                     $size = $_FILES['file']['size'];
+    //                     $error = $_FILES['file']['error'];
+    //                     $type = $_FILES['file']['type'];
+
+    //                     $tabExtension = explode('.', $name);
+    //                     $extension = strtolower(end($tabExtension));
+
+    //                     // Tableau des extensions qu'on autorise
+    //                     $allowedExtensions = ['jpg', 'png', 'jpeg', 'webp'];
+    //                     $maxSize = 100000000;
+
+    //                     if (in_array($extension, $allowedExtensions) && $size <= $maxSize && $error == 0) {
+
+    //                         $uniqueName = uniqid('', true);
+    //                         $file = $uniqueName . '.' . $extension;
+
+    //                         $requestPoster = $pdo->prepare("
+    //                     SELECT movie.poster
+    //                     FROM movie
+    //                     WHERE movie.idMovie = :id
+    //                     ");
+    //                         $requestPoster->execute(["id" => $id]);
+
+    //                         // Permet de récupérer l'image du poster du film et de la supprimer en passant par la variable et le tableau "poster", autrement on pourrait faire une variable pour récupérer directement le tableau
+    //                         $linkPoster = $requestPoster->fetch();
+
+    //                         if (!$linkPoster !== "./public/img/movies/default.webp") {
+    //                             unlink($linkPoster['poster']);
+    //                         }
+
+    //                         // On récupère l'image de notre forumulaire via la superglobale file, on prend le chemin et on crée l'image
+    //                         $posterSource = imagecreatefromstring(file_get_contents($tmpName));
+    //                         // Récupération du chemin cible de l'image
+    //                         $webpPath = "public/img/movies/" . $uniqueName . ".webp";
+    //                         // Conversion en format webp (on prend l'image et on la colle dans le dossier de destination)
+    //                         imagewebp($posterSource, $webpPath);
+
+    //                         $requestNewPoster = $pdo->prepare("
+    //                     UPDATE movie
+    //                     SET poster = :poster
+    //                     WHERE idMovie = :id
+    //                     ");
+
+    //                         $requestNewPoster->execute([
+    //                             "poster" => $webpPath,
+    //                             "id" => $id
+    //                         ]);
+    //                     } else {
+    //                         echo "Wrong extension or file size too large or error !";
+    //                         exit;
+    //                     }
+    //                 }
+
+    //                 $requestEditMovie = $pdo->prepare("
+    //             UPDATE movie
+    //             SET title = :title, releaseYear = :releaseYear, duration = :duration, note = :note, synopsis = :synopsis, idDirector = :idDirector
+    //             WHERE idMovie = :id
+    //             ");
+    //                 $requestEditMovie->execute([
+    //                     "title" => $newTitle,
+    //                     "releaseYear" => $newReleaseYear,
+    //                     "duration" => $newDuration,
+    //                     "note" => $newNote,
+    //                     "synopsis" => $newSynopsis,
+    //                     "idDirector" => $newDirector,
+    //                     "id" => $id
+    //                 ]);
+
+    //                 $theme = filter_input(INPUT_POST, "idTheme", FILTER_VALIDATE_INT);
+
+    //                 $requestPurgeMovieTheme = $pdo->prepare("
+    //             DELETE FROM movie_theme
+    //             WHERE idMovie = :idMovie
+    //             ");
+
+    //                 $requestPurgeMovieTheme->execute([
+    //                     "idMovie" => $id
+    //                 ]);
+
+    //                 foreach ($_POST['theme'] as $theme) {
+
+    //                     $requestEditMovieTheme = $pdo->prepare("
+    //             INSERT INTO movie_theme (idMovie, idTheme)
+    //             VALUES(:idMovie, :idTheme)
+    //             ");
+
+    //                     $requestEditMovieTheme->execute([
+    //                         "idMovie" => $id,
+    //                         "idTheme" => $theme
+    //                     ]);
+    //                 }
+
+    //                 header("Location:index.php?action=editMovie&id=$id");
+    //                 $_SESSION['message'] = "<div class='alert'>This movie has been edited successfully !</div>";
+    //                 exit;
+    //             }
+
+    //             require "view/movies/editMovie.php";
+    //         } else {
+    //             header("Location:index.php");
+    //             exit;
+    //         }
+    //     }
+    // }

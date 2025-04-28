@@ -47,9 +47,9 @@ if (isset($page) && $page === "detailFilm" && !empty($backgroundImage)) {
 <footer>
     <a class="contact" href="">NOUS CONTACTER</a> 
         <div class="liens">
-            <i class="fa-brands fa-x-twitter fa-lg"><a href=""></a></i>
-            <i class="fa-brands fa-facebook-messenger fa-lg"><a href=""></a></i>
-            <i class="fa-brands fa-instagram fa-lg"><a href=""></a></i>
+            <a href="https://x.com/?lang=fr"><i class="fa-brands fa-x-twitter fa-lg"></i></a>
+            <a href="https://www.messenger.com/?locale=fr_FR"><i class="fa-brands fa-facebook-messenger fa-lg"></i></a>
+            <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram fa-lg"></i></a>
         </div>  
 </footer>
 </html>

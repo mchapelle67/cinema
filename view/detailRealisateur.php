@@ -19,9 +19,10 @@ if (isset($realisateur["sexe"]) && $realisateur["sexe"] == "M") {
     };
 
 // evite le bug si filmographie vide
-    // if(empty($realisateur['id_film'])) {
-    //     echo "Filmographie non repertoriée";
-    // };
+if(empty($realisateur['id_film'])) {
+    echo "Filmographie non repertoriée";
+};
+
 ?>
 
 <section class="personne">
@@ -35,9 +36,9 @@ if (isset($realisateur["sexe"]) && $realisateur["sexe"] == "M") {
         <p>Date de naissance:</p> <?= $dateDeNaissance ?>
         <p>Sexe:</p> <?= $realisateur["sexe"] ?>
         <p>Filmographie:</p>
-                <?php foreach ($requeteFilm->fetchAll() as $film) { ?>
-                        <p><a href="index.php?action=detailFilm&id=<?= $film["id_film"]?>"><?= $film["titre"] ?></a></p>
-               <?php }; ?>
+                <?php foreach ($requeteFilm->fetchAll() as $film) { ?> 
+                    <p><a href="index.php?action=detailFilm&id=<?= $film["id_film"]?>"><?= $film["titre"] ?></a></p>
+                <?php }; ?>
     </div>
 
 <button class="button"><a href="index.php?action=supprimerPerso&id=<?= $realisateur['id_personne']?>">Supprimer ce réalisateur</a></button>
